@@ -1,0 +1,100 @@
+Angola-África
+Argelia-África
+Burundi-África
+Camerún-África
+Chad-África
+República del Congo-África
+Costa de Marfil-África
+Egipto-África
+Etiopía-África
+Ghana-África
+Kenia-África
+Libia-África
+Madagascar-África
+Malí-África
+Marruecos-África
+Mozambique-África
+Nigeria-África
+Ruanda-África
+Senegal-África
+Somalía-África
+Sudáfrica-África
+Sudán-África
+Tanzania-África
+Zimbabue-África
+Canadá-América
+Estados Unidos-América
+Groenlandia-América
+México-América
+Belice-América
+Costa Rica-América
+El Salvador-América
+Guatemala-América
+Honduras-América
+Nicaragua-América
+Panamá-América
+Bahamas-América
+Cuba-América
+Granada-América
+Haiti-América
+Jamaica-América
+Puerto Rico-América
+República Dominicana-América
+Argentina-América
+Brasil-América
+Chile-América
+Colombia-América
+Ecuador-América
+Guyana-América
+Paraguay-América
+Perú-América
+Uruguay-América
+Venezuela-América
+Afganistán-Asia
+Arabia Saudita-Asia
+Bangladesh-Asia
+Birmania-Asia
+Bután-Asia
+Camboya-Asia
+China-Asia
+Corea del Norte-Asia
+Corea del Sur-Asia
+Filipinas-Asia
+Hong Kong-Asia
+India-Asia
+Irak-Asia
+Irán-Asia
+Israel-Asia
+Japón-Asia
+Jordania-Asia
+Kazajistán-Asia
+Laos-Asia
+Malasia-Asia
+Maldivas-Asia
+Mongolia-Asia
+Pakistán-Asia
+Qatar-Asia
+Rusia-Asia
+Singapur-Asia
+Vietnam-Asia
+Alemania-Europa
+Austria-Europa
+Bélgica-Europa
+Dinamarca-Europa
+Eslovaquia-Europa
+España-Europa
+Finlandia-Europa
+Grecia-Europa
+Irlanda-Europa
+Italia-Europa
+Noruega-Europa
+Portugal-Europa
+Países Bajos-Europa
+Reino Unido-Europa
+Serbia-Europa
+Suiza-Europa
+Australia-Oceanía
+Fiyi-Oceanía
+Nueva Zelanda-Oceanía
+Papúa Nueva Guinea-Oceanía
+Samoa-Oceanía
