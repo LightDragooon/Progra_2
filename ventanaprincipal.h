@@ -2,6 +2,7 @@
 #define VENTANAPRINCIPAL_H
 
 #include <QMainWindow>
+#include "estructuras.h"
 
 namespace Ui {
 class VentanaPrincipal;
@@ -15,8 +16,15 @@ public:
     explicit VentanaPrincipal(QWidget *parent = 0);
     ~VentanaPrincipal();
 
-private:
     Ui::VentanaPrincipal *ui;
+
+    ListaPersonas* listaPersonasPlaneta = new ListaPersonas();
+
+private slots:
+    void on_verInfoPersonas_clicked();
+
+
+
 };
 
 #endif // VENTANAPRINCIPAL_H

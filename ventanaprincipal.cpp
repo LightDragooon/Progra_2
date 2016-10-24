@@ -1,5 +1,6 @@
 #include "ventanaprincipal.h"
 #include "ui_ventanaprincipal.h"
+#include "ventanainfopersonas.h"
 
 VentanaPrincipal::VentanaPrincipal(QWidget *parent) :
     QMainWindow(parent),
@@ -11,4 +12,13 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent) :
 VentanaPrincipal::~VentanaPrincipal()
 {
     delete ui;
+}
+
+void VentanaPrincipal::on_verInfoPersonas_clicked()
+{
+    if(listaPersonasPlaneta != nullptr){
+        VentanaInfoPersonas verInfoPersonas(this);
+        verInfoPersonas.exec();
+
+    }
 }

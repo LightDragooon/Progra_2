@@ -1,24 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>VentanaPrincipal</class>
- <widget class="QMainWindow" name="VentanaPrincipal" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="VentanaPrincipal">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>1597</width>
+    <height>824</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>VentanaPrincipal</string>
+  <property name="windowTitle">
+   <string>El Mundo</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/recursos/imagenes/icono_Tierra.png</normaloff>:/recursos/imagenes/icono_Tierra.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>18</width>
+    <height>20</height>
+   </size>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/recursos/imagenes/nebulosa.jpg);</string>
+   </property>
+   <widget class="QPushButton" name="Paraiso">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>791</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>:/recursos/imagenes/tiraCielo.jpg</normaloff>:/recursos/imagenes/tiraCielo.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>791</width>
+      <height>121</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>200</y>
+      <width>791</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MAPA</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Infierno">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>640</y>
+      <width>791</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>:/recursos/imagenes/tiraCInfierno.jpg</normaloff>:/recursos/imagenes/tiraCInfierno.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>791</width>
+      <height>121</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="generarPecados">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>560</y>
+      <width>177</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>:/recursos/imagenes/Pecados.jpg</normaloff>:/recursos/imagenes/Pecados.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>177</width>
+      <height>81</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="condenar">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>560</y>
+      <width>111</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>:/recursos/imagenes/Condenación.jpg</normaloff>:/recursos/imagenes/Condenación.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>111</width>
+      <height>81</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="generarNacimientos">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>150</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>:/recursos/imagenes/Nacimientos.jpg</normaloff>:/recursos/imagenes/Nacimientos.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>171</width>
+      <height>71</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_7">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>10</y>
+      <width>327</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>:/recursos/imagenes/guardianCielo.png</normaloff>:/recursos/imagenes/guardianCielo.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>327</width>
+      <height>121</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_8">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>160</y>
+      <width>481</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Arbol de la Vida</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="verInfoPersonas">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>150</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Info Personas</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1597</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QMenu" name="menuConsultas">
+    <property name="title">
+     <string>Consultas</string>
+    </property>
+    <addaction name="actionTop_10_m_s_pecadores"/>
+    <addaction name="actionTop_5_pa_ses_menos_pecadores"/>
+    <addaction name="separator"/>
+    <addaction name="actionVer_pecadores"/>
+    <addaction name="actionBuscar_por_apellido_y_pa_s"/>
+    <addaction name="actionPecados_familiares_ID"/>
+   </widget>
+   <addaction name="menuConsultas"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionTop_10_m_s_pecadores">
+   <property name="text">
+    <string>Top 10 países más pecadores</string>
+   </property>
+  </action>
+  <action name="actionTop_5_pa_ses_menos_pecadores">
+   <property name="text">
+    <string>Top 5 países menos pecadores</string>
+   </property>
+  </action>
+  <action name="actionVer_pecadores">
+   <property name="text">
+    <string>Ver pecadores</string>
+   </property>
+  </action>
+  <action name="actionBuscar_por_apellido_y_pa_s">
+   <property name="text">
+    <string>Buscar por apellido y país</string>
+   </property>
+  </action>
+  <action name="actionPecados_familiares_ID">
+   <property name="text">
+    <string>Pecados familiares (ID)</string>
+   </property>
+  </action>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

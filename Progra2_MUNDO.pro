@@ -13,8 +13,24 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        ventanaprincipal.cpp
+        ventanaprincipal.cpp \
+    hilopintar.cpp \
+    hiloconfigurar.cpp \
+    ventanainfopersonas.cpp\
+    hilobase.cpp \
 
-HEADERS  += ventanaprincipal.h
+HEADERS  += ventanaprincipal.h \
+    estructuras.h \
+    hilopintar.h \
+    simulacionmundo.h \
+    el_mundo.h \
+    hiloconfigurar.h \
+    ventanainfopersonas.h\
+    hilobase.h \
 
-FORMS    += ventanaprincipal.ui
+
+FORMS    += ventanaprincipal.ui \
+    ventanainfopersonas.ui\
+
+RESOURCES += \
+    recursos.qrc

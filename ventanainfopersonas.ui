@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaInfoPersonas</class>
+ <widget class="QDialog" name="VentanaInfoPersonas">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1058</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>1001</width>
+     <height>511</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nombre</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Apellido</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>País</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Creencia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Profesión</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Correo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nacimiento</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Hijos/Hijas</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Lujuria</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Gula</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Avaricia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Pereza</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Ira</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Envidia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Soberbia</string>
+    </property>
+   </column>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

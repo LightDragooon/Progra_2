@@ -9,11 +9,11 @@
 #include <QTextStream>
 
 #include <QDebug>
-struct informacionPersona;
-struct nodoPersona;
-struct listaPersonas;
+struct InformacionPersona;
+struct NodoPersona;
+struct ListaPersonas;
 
-struct informacionPersona {
+struct InformacionPersona {
     int randomsUnicos [9999999];
     QString listaNombres [1000];
     QString listaApellidos [1000];
@@ -21,7 +21,7 @@ struct informacionPersona {
     QString listaProfesiones [50];
     QString listaCreencias [10];
 
-    informacionPersona(){
+    InformacionPersona(){
         setListaNombres();
         setListaApellidos();
         setListaPaises();
@@ -160,8 +160,8 @@ struct informacionPersona {
     }
 };
 
-struct nodoPersona {
-    nodoPersona* siguiente;
+struct NodoPersona {
+    NodoPersona* siguiente;
 
     int id;
     QString nombre;
@@ -176,7 +176,7 @@ struct nodoPersona {
     int pecados[7];
     //Lista de hijos
 
-    nodoPersona (int _id, QString _nombre, QString _apellido, QString _pais, QString _creencia, QString _profesion, QString _correo){
+    NodoPersona (int _id, QString _nombre, QString _apellido, QString _pais, QString _creencia, QString _profesion, QString _correo){
         id = _id;
         nombre = _nombre;
         apellido = _apellido;
@@ -211,47 +211,63 @@ struct nodoPersona {
     }
 
 };
-struct listaPersonas{
-    nodoPersona* primeraPersona;
-    informacionPersona* infoPersona;
+struct ListaPersonas{
+    NodoPersona* primeraPersona;
+    InformacionPersona* infoPersona;
 
-    listaPersonas(){
+    ListaPersonas(){
 
-        infoPersona = new informacionPersona();
+        infoPersona = new InformacionPersona();
         primeraPersona = nullptr;
 
     }
 
-    void insertarCantidadPersona(int cantidadCrear){
+    void insertarPersona(int idSiguiente){
+        qDebug()<<idSiguiente;
+        srand(time(NULL));
+        int randomMil = (rand() % (int)(1000 + 1));
+        int randomMil2 = (rand() % (int)(1000 + 1));
+        int randomCien = (rand() % (int)(100 + 1));
+        int randomCincuenta = (rand() % (int)(50 + 1));
+        int randomDiez = (rand() % (int)(10 + 1));
 
+        if(primeraPersona == nullptr)
+            primeraPersona = new NodoPersona(infoPersona->randomsUnicos[idSiguiente],infoPersona->listaNombres[randomMil],
+                                             infoPersona->listaApellidos[randomMil2], infoPersona->listaPaises[randomCien][0],
+                                             infoPersona->listaCreencias[randomDiez], infoPersona->listaProfesiones[randomCincuenta],"Correo");
 
+        else{
 
-            srand(time(NULL));
-            int randomMil = (rand() % (int)(1000 + 1));
-            int randomMil2 = (rand() % (int)(1000 + 1));
-            int randomCien = (rand() % (int)(100 + 1));
-            int randomCincuenta = (rand() % (int)(50 + 1));
-            int randomDiez = (rand() % (int)(10 + 1));
+            NodoPersona* tmp = primeraPersona;
+            while (tmp->siguiente != nullptr)
+                tmp = tmp->siguiente;
 
-            if(primeraPersona == nullptr)
-                primeraPersona = new nodoPersona(infoPersona->randomsUnicos[5],infoPersona->listaNombres[randomMil],
-                                                 infoPersona->listaApellidos[randomMil2], infoPersona->listaPaises[randomCien][0],
-                                                 infoPersona->listaCreencias[randomDiez], infoPersona->listaProfesiones[randomCincuenta],"Correo");
+            tmp->siguiente = new NodoPersona(infoPersona->randomsUnicos[idSiguiente],infoPersona->listaNombres[randomMil],
+                                  infoPersona->listaApellidos[randomMil2], infoPersona->listaPaises[randomCien][0],
+                                  infoPersona->listaCreencias[randomDiez], infoPersona->listaProfesiones[randomCincuenta],"Correo");
+        }
+    }
 
-            else{
-
-                nodoPersona* tmp = primeraPersona;
-                while (tmp != nullptr)
-                    tmp = tmp->siguiente;
-
-                tmp = new nodoPersona(infoPersona->randomsUnicos[5],infoPersona->listaNombres[randomMil],
-                                      infoPersona->listaApellidos[randomMil2], infoPersona->listaPaises[randomCien][0],
-                                      infoPersona->listaCreencias[randomDiez], infoPersona->listaProfesiones[randomCincuenta],"Correo");
-                qDebug()<<tmp->nombre;
-            }
-
-
+    int largo(){
+        int largoLista = 0;
+        NodoPersona* tmp = primeraPersona;
+        while(tmp != nullptr){
+            tmp = tmp->siguiente;
+            largoLista++;
+        }
+        return largoLista;
     }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 #endif // ESTRUCTURAS_H
