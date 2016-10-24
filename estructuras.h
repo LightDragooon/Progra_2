@@ -2,63 +2,19 @@
 #define ESTRUCTURAS_H
 #include <ctime>
 #include <cstdlib>//RANDOMS
+#include <time.h> //Tiempo
 #include <QString>
 #include <QFile>//Manejo de archivos
 #include <QMessageBox>
 #include <QTextStream>
 
 #include <QDebug>
-
-struct nodoPersona {
-    int id;
-    QString nombre;
-    QString apellido;
-    QString pais;
-    QString creencia;
-    QString profesion;
-    QString correo;
-    QString fechaNacimiento;
-    //Pecados
-    // [Lujuria, Gula, Avaricia, Pereza, Ira, Envidia, Soberbia]
-    int pecados[7];
-    //Lista de hijos
-
-    nodoPersona (int _id, QString _nombre, QString _apellido, QString _pais, QString _creencia, QString _profesion, QString _correo){
-        id = _id;
-        nombre = _nombre;
-        apellido = _apellido;
-        pais = _pais;
-        creencia = _creencia;
-        profesion = _profesion;
-        correo = _correo;
-        fechaNacimiento = setFechaNacimiento();
-        setPecados();
-    }
-    /**
-     * @brief setFechaNacimiento
-     * @return fecha actual con el formato dd/mm/aa hh:mm:ss
-     */
-    QString setFechaNacimiento (){
-        QString fecha;
-        time_t tiempoAhora = time (0);
-        struct tm * ahora = localtime(& tiempoAhora);
-        fecha = "Fecha de nacimiento: "+QString::number(ahora->tm_mday)+"/"+QString::number(ahora->tm_mon+1)+"/"+QString::number(ahora->tm_year+1900)+
-                "\nHora de nacimiento: "+QString::number(ahora->tm_hour)+":"+QString::number(ahora->tm_min)+":"+QString::number(ahora->tm_sec);
-        return fecha;
-    }
-    /**
-     * Establece los pecados en 0
-     * @brief setPecados
-     */
-    void setPecados(){
-        for (int i = 0; i < 7; i++){
-            pecados[i] = 0;
-        }
-    }
-
-};
+struct informacionPersona;
+struct nodoPersona;
+struct listaPersonas;
 
 struct informacionPersona {
+    int randomsUnicos [9999999];
     QString listaNombres [1000];
     QString listaApellidos [1000];
     QString listaPaises [100] [2];//100 filas 2 columnas  (pais, continente)
@@ -69,6 +25,9 @@ struct informacionPersona {
         setListaNombres();
         setListaApellidos();
         setListaPaises();
+        setListaCreencias();
+        setListaProfesiones();
+        setListaRandoms();
     }
 
     /**
@@ -133,7 +92,7 @@ struct informacionPersona {
         while(!in.atEnd()) {
             QString tempPaisCont = in.readLine();
             QStringList paisCont = tempPaisCont.split('-', QString::SkipEmptyParts);
-            qDebug()<<i;
+
             listaPaises[i][0] = paisCont[0];
             listaPaises[i++][1] = paisCont[1];
         }
@@ -162,15 +121,137 @@ struct informacionPersona {
 
         archivoCreencias.close();
     }
+
+    /**
+     * Carga desde un archivo de texto las profesiones del mundo
+     * @brief setListaProfesiones
+     */
+    void setListaProfesiones(){
+        int i = 0;
+        QFile archivoProfesiones(":/recursos/archivosTexto/Profesion.txt");
+        if(!archivoProfesiones.open(QIODevice::ReadOnly)) {
+            QMessageBox::information(0, "error", archivoProfesiones.errorString());
+        }
+
+        QTextStream in(&archivoProfesiones);
+
+        //Son 50 profesiones
+        while(!in.atEnd()) {
+            QString profesion = in.readLine();
+            listaProfesiones[i++] = profesion;
+        }
+
+        archivoProfesiones.close();
+    }
+
+    void setListaRandoms(){
+        //Inicializo el array
+        for(int i = 0; i < 10000000; i++)
+            randomsUnicos[i] = i;
+        //Le hago un shuffle al array
+        int temp;
+        for (int i = 9999999; i >= 0; i--){
+            int random = (rand() % (int)(i + 1));//min + (rand() % (int)(max - min + 1)) -> 0 + (rand() % (int)(max - 0 + 1))
+            temp = randomsUnicos[i];
+            randomsUnicos[i] = randomsUnicos[random];
+            randomsUnicos[random] = temp;
+
+        }
+    }
 };
 
+struct nodoPersona {
+    nodoPersona* siguiente;
+
+    int id;
+    QString nombre;
+    QString apellido;
+    QString pais;
+    QString creencia;
+    QString profesion;
+    QString correo;
+    QString fechaNacimiento;
+    //Pecados
+    // [Lujuria, Gula, Avaricia, Pereza, Ira, Envidia, Soberbia]
+    int pecados[7];
+    //Lista de hijos
+
+    nodoPersona (int _id, QString _nombre, QString _apellido, QString _pais, QString _creencia, QString _profesion, QString _correo){
+        id = _id;
+        nombre = _nombre;
+        apellido = _apellido;
+        pais = _pais;
+        creencia = _creencia;
+        profesion = _profesion;
+        correo = _correo;
+        fechaNacimiento = setFechaNacimiento();
+        setPecados();
+        siguiente = nullptr;
+    }
+    /**
+     * @brief setFechaNacimiento
+     * @return fecha actual con el formato dd/mm/aa hh:mm:ss
+     */
+    QString setFechaNacimiento (){
+        QString fecha;
+        time_t tiempoAhora = time (0);
+        struct tm * ahora = localtime(& tiempoAhora);
+        fecha = "Fecha de nacimiento: "+QString::number(ahora->tm_mday)+"/"+QString::number(ahora->tm_mon+1)+"/"+QString::number(ahora->tm_year+1900)+
+                "\nHora de nacimiento: "+QString::number(ahora->tm_hour)+":"+QString::number(ahora->tm_min)+":"+QString::number(ahora->tm_sec);
+        return fecha;
+    }
+    /**
+     * Establece los pecados en 0
+     * @brief setPecados
+     */
+    void setPecados(){
+        for (int i = 0; i < 7; i++){
+            pecados[i] = 0;
+        }
+    }
+
+};
+struct listaPersonas{
+    nodoPersona* primeraPersona;
+    informacionPersona* infoPersona;
+
+    listaPersonas(){
+
+        infoPersona = new informacionPersona();
+        primeraPersona = nullptr;
+
+    }
+
+    void insertarCantidadPersona(int cantidadCrear){
 
 
 
+            srand(time(NULL));
+            int randomMil = (rand() % (int)(1000 + 1));
+            int randomMil2 = (rand() % (int)(1000 + 1));
+            int randomCien = (rand() % (int)(100 + 1));
+            int randomCincuenta = (rand() % (int)(50 + 1));
+            int randomDiez = (rand() % (int)(10 + 1));
+
+            if(primeraPersona == nullptr)
+                primeraPersona = new nodoPersona(infoPersona->randomsUnicos[5],infoPersona->listaNombres[randomMil],
+                                                 infoPersona->listaApellidos[randomMil2], infoPersona->listaPaises[randomCien][0],
+                                                 infoPersona->listaCreencias[randomDiez], infoPersona->listaProfesiones[randomCincuenta],"Correo");
+
+            else{
+
+                nodoPersona* tmp = primeraPersona;
+                while (tmp != nullptr)
+                    tmp = tmp->siguiente;
+
+                tmp = new nodoPersona(infoPersona->randomsUnicos[5],infoPersona->listaNombres[randomMil],
+                                      infoPersona->listaApellidos[randomMil2], infoPersona->listaPaises[randomCien][0],
+                                      infoPersona->listaCreencias[randomDiez], infoPersona->listaProfesiones[randomCincuenta],"Correo");
+                qDebug()<<tmp->nombre;
+            }
 
 
-
-
-
+    }
+};
 
 #endif // ESTRUCTURAS_H
