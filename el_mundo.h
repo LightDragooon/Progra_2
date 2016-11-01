@@ -10,6 +10,7 @@ struct Mundo {
     Mundo(){
 
         planetaTierra = new ListaPersonas();
+
     }
 
 };

@@ -17,10 +17,8 @@ struct Simulacion{
     Simulacion(){
         idSiguiente = 0;
         mundoRef = new Mundo();
-        //10 000 personas inicialmente
-        for (int i = 0; i < 3 ; i++){
-            mundoRef->planetaTierra->insertarPersona(idSiguiente++);
-        }
+        mundoRef->planetaTierra->insertarPersonaCantidad(0, 10000);
+        mundoRef->planetaTierra->agregarHijos();
         ventanaRef = new VentanaPrincipal();
         configurar = new HiloConfigurar(ventanaRef,mundoRef);
         configurar->start();

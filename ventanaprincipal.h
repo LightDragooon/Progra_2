@@ -18,13 +18,21 @@ public:
 
     Ui::VentanaPrincipal *ui;
 
-    ListaPersonas* listaPersonasPlaneta = new ListaPersonas();
+    ListaPersonas* listaPersonasPlaneta = nullptr;
+
+    bool nuevosNacimientos = false;
+    int cantidadNacimientos = 0;
+
+    bool generarPecados = false;
 
 private slots:
     void on_verInfoPersonas_clicked();
 
 
 
+    void on_generarNacimientos_clicked();
+    void on_generarPecados_clicked();
+    void on_action_rbol_Apellidos_triggered();
 };
 
 #endif // VENTANAPRINCIPAL_H

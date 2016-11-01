@@ -17,5 +17,7 @@
         <file>imagenes/icono_Tierra.png</file>
         <file>archivosTexto/Profesion.txt</file>
         <file>imagenes/guardianCielo.png</file>
+        <file>imagenes/Nacimiento.jpg</file>
+        <file>imagenes/Diablo.jpg</file>
     </qresource>
 </RCC>

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
+  <widget class="QTableWidget" name="tablaPersonas">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -22,6 +22,12 @@
      <height>511</height>
     </rect>
    </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>35</number>
+   </attribute>
    <column>
     <property name="text">
      <string>ID</string>

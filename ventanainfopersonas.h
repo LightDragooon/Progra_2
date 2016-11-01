@@ -16,8 +16,12 @@ public:
     explicit VentanaInfoPersonas(QWidget *parent = 0);
     ~VentanaInfoPersonas();
 
+
+    void setListaPersonas(ListaPersonas* _listaPersonasT);
+
 private:
     Ui::VentanaInfoPersonas *ui;
+    ListaPersonas* listaPersonasT;
 };
 
 #endif // VENTANAINFOPERSONAS_H

@@ -110,7 +110,7 @@
     </property>
     <property name="iconSize">
      <size>
-      <width>177</width>
+      <width>176</width>
       <height>81</height>
      </size>
     </property>
@@ -234,7 +234,14 @@
     <addaction name="actionBuscar_por_apellido_y_pa_s"/>
     <addaction name="actionPecados_familiares_ID"/>
    </widget>
+   <widget class="QMenu" name="menuArboles">
+    <property name="title">
+     <string>Arboles</string>
+    </property>
+    <addaction name="action_rbol_Apellidos"/>
+   </widget>
    <addaction name="menuConsultas"/>
+   <addaction name="menuArboles"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -268,6 +275,11 @@
   <action name="actionPecados_familiares_ID">
    <property name="text">
     <string>Pecados familiares (ID)</string>
+   </property>
+  </action>
+  <action name="action_rbol_Apellidos">
+   <property name="text">
+    <string>Árbol Apellidos</string>
    </property>
   </action>
  </widget>

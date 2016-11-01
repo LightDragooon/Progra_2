@@ -18,6 +18,9 @@ SOURCES += main.cpp\
     hiloconfigurar.cpp \
     ventanainfopersonas.cpp\
     hilobase.cpp \
+    ventananacimiento.cpp \
+    ventanadiablo.cpp \
+    ventanaarbol.cpp
 
 HEADERS  += ventanaprincipal.h \
     estructuras.h \
@@ -27,10 +30,16 @@ HEADERS  += ventanaprincipal.h \
     hiloconfigurar.h \
     ventanainfopersonas.h\
     hilobase.h \
+    ventananacimiento.h \
+    ventanadiablo.h \
+    ventanaarbol.h
 
 
 FORMS    += ventanaprincipal.ui \
     ventanainfopersonas.ui\
+    ventananacimiento.ui \
+    ventanadiablo.ui \
+    ventanaarbol.ui
 
 RESOURCES += \
     recursos.qrc
