@@ -23,6 +23,7 @@ void VentanaNacimiento::on_buttonBox_rejected()
     reject();
 }
 
-int VentanaNacimiento::numNacimientos () const{
+int VentanaNacimiento::numNacimientos () const
+{
     return ui->spinBox->value();
 }

@@ -3,27 +3,27 @@
 #include "ventanaprincipal.h"
 #include "el_mundo.h"
 #include "hiloconfigurar.h"
-#include "hilopintar.h"
+#include "hiloarbolvida.h"
 
 struct Simulacion{
     VentanaPrincipal* ventanaRef;
     Mundo* mundoRef;
 
     HiloConfigurar* configurar;
-    HiloPintar* pintar;
-
-    int idSiguiente;
+    HiloArbolVida* salvacionHumanos;
 
     Simulacion(){
-        idSiguiente = 0;
         mundoRef = new Mundo();
-        mundoRef->planetaTierra->insertarPersonaCantidad(0, 10000);
+        mundoRef->planetaTierra->insertarPersonaCantidad(0, 1800);
+
         mundoRef->planetaTierra->agregarHijos();
         ventanaRef = new VentanaPrincipal();
+
         configurar = new HiloConfigurar(ventanaRef,mundoRef);
         configurar->start();
-        pintar = new HiloPintar(ventanaRef,mundoRef);
-        pintar->start();
+
+        salvacionHumanos = new HiloArbolVida(ventanaRef,mundoRef);
+        salvacionHumanos->start();
 
     }
 };

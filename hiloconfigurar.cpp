@@ -24,6 +24,10 @@ void HiloConfigurar::run(){
             mutex.unlock();
 
             mutex.lock();
+            elMundo->planetaTierra->agregarHijos();
+            mutex.unlock();
+
+            mutex.lock();
             ventanaPintar->listaPersonasPlaneta = elMundo->planetaTierra;
             mutex.unlock();
 
@@ -32,6 +36,7 @@ void HiloConfigurar::run(){
             ventanaPintar->nuevosNacimientos = false;
             ventanaPintar->cantidadNacimientos = 0;
             mutex.unlock();
+
 
         }
         if(ventanaPintar->generarPecados){
@@ -59,6 +64,13 @@ void HiloConfigurar::run(){
             qDebug()<<"Configurando lista de personas";
 
         }
-        msleep(200);//Bien rapido
+
+
+
+
+
+
+
+        msleep(350);//Bien rapido
     }
 }
