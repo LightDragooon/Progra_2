@@ -19,5 +19,112 @@
         <file>imagenes/guardianCielo.png</file>
         <file>imagenes/Nacimiento.jpg</file>
         <file>imagenes/Diablo.jpg</file>
+        <file>videos/mundoCrop.gif</file>
+        <file>imagenes/hombrePerfecto.jpg</file>
+        <file>imagenes/mapaMundi.jpg</file>
+        <file>imagenes/losPecados.jpeg</file>
+        <file>videos/arbolVida.gif</file>
+    </qresource>
+    <qresource prefix="/banderas">
+        <file>banderas/Afganistán.png</file>
+        <file>banderas/Alemania.png</file>
+        <file>banderas/Angola.png</file>
+        <file>banderas/Arabia Saudita.png</file>
+        <file>banderas/Argelia.png</file>
+        <file>banderas/Argentina.png</file>
+        <file>banderas/Australia.png</file>
+        <file>banderas/Austria.png</file>
+        <file>banderas/Bahamas.png</file>
+        <file>banderas/Bangladesh.png</file>
+        <file>banderas/Bélgica.png</file>
+        <file>banderas/Belice.png</file>
+        <file>banderas/Birmania.png</file>
+        <file>banderas/Brasil.png</file>
+        <file>banderas/Burundi.png</file>
+        <file>banderas/Bután.png</file>
+        <file>banderas/Camboya.png</file>
+        <file>banderas/Camerún.png</file>
+        <file>banderas/Canadá.png</file>
+        <file>banderas/Chad.png</file>
+        <file>banderas/Chile.png</file>
+        <file>banderas/China.png</file>
+        <file>banderas/Colombia.png</file>
+        <file>banderas/Corea del Norte.png</file>
+        <file>banderas/Corea del Sur.png</file>
+        <file>banderas/Costa de Marfil.png</file>
+        <file>banderas/Costa Rica.png</file>
+        <file>banderas/Cuba.png</file>
+        <file>banderas/Dinamarca.png</file>
+        <file>banderas/Ecuador.png</file>
+        <file>banderas/Egipto.png</file>
+        <file>banderas/El Salvador.png</file>
+        <file>banderas/Eslovaquia.png</file>
+        <file>banderas/España.png</file>
+        <file>banderas/Estados Unidos.png</file>
+        <file>banderas/Etiopía.png</file>
+        <file>banderas/Filipinas.png</file>
+        <file>banderas/Finlandia.png</file>
+        <file>banderas/Fiyi.png</file>
+        <file>banderas/Ghana.png</file>
+        <file>banderas/Granada.png</file>
+        <file>banderas/Grecia.png</file>
+        <file>banderas/Groenlandia.png</file>
+        <file>banderas/Guatemala.png</file>
+        <file>banderas/Guyana.png</file>
+        <file>banderas/Haiti.png</file>
+        <file>banderas/Honduras.png</file>
+        <file>banderas/Hong Kong.png</file>
+        <file>banderas/India.png</file>
+        <file>banderas/Irak.png</file>
+        <file>banderas/Irán.png</file>
+        <file>banderas/Irlanda.png</file>
+        <file>banderas/Israel.png</file>
+        <file>banderas/Italia.png</file>
+        <file>banderas/Jamaica.png</file>
+        <file>banderas/Japón.png</file>
+        <file>banderas/Jordania.png</file>
+        <file>banderas/Kazajistán.png</file>
+        <file>banderas/Kenia.png</file>
+        <file>banderas/Laos.png</file>
+        <file>banderas/Libia.png</file>
+        <file>banderas/Madagascar.png</file>
+        <file>banderas/Malasia.png</file>
+        <file>banderas/Maldivas.png</file>
+        <file>banderas/Malí.png</file>
+        <file>banderas/Marruecos.png</file>
+        <file>banderas/México.png</file>
+        <file>banderas/Mongolia.png</file>
+        <file>banderas/Mozambique.png</file>
+        <file>banderas/Nicaragua.png</file>
+        <file>banderas/Nigeria.png</file>
+        <file>banderas/Noruega.png</file>
+        <file>banderas/Nueva Zelanda.png</file>
+        <file>banderas/Países Bajos.png</file>
+        <file>banderas/Pakistán.png</file>
+        <file>banderas/Panamá.png</file>
+        <file>banderas/Papúa Nueva Guinea.png</file>
+        <file>banderas/Paraguay.png</file>
+        <file>banderas/Perú.png</file>
+        <file>banderas/Portugal.png</file>
+        <file>banderas/Puerto Rico.png</file>
+        <file>banderas/Qatar.png</file>
+        <file>banderas/Reino Unido.png</file>
+        <file>banderas/República del Congo.png</file>
+        <file>banderas/República Dominicana.png</file>
+        <file>banderas/Ruanda.png</file>
+        <file>banderas/Rusia.png</file>
+        <file>banderas/Samoa.png</file>
+        <file>banderas/Senegal.png</file>
+        <file>banderas/Serbia.png</file>
+        <file>banderas/Singapur.png</file>
+        <file>banderas/Somalía.png</file>
+        <file>banderas/Sudáfrica.png</file>
+        <file>banderas/Sudán.png</file>
+        <file>banderas/Suiza.png</file>
+        <file>banderas/Tanzania.png</file>
+        <file>banderas/Uruguay.png</file>
+        <file>banderas/Venezuela.png</file>
+        <file>banderas/Vietnam.png</file>
+        <file>banderas/Zimbabue.png</file>
     </qresource>
 </RCC>

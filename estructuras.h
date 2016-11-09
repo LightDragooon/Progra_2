@@ -8,10 +8,9 @@
 #include <QFile>//Manejo de archivos
 #include <QMessageBox>
 #include <QTextStream>
-#include <iostream>
 #include <QDebug>
 
-using namespace std;
+#include "limits"
 
 struct InformacionPersona;
 struct NodoPersona;
@@ -175,7 +174,7 @@ struct InformacionPersona {
 
 struct NodoPersona {
     NodoPersona* siguiente;
-
+    //NodoPersona* anterior;
     unsigned int id;
     QString nombre;
     QString apellido;
@@ -189,6 +188,8 @@ struct NodoPersona {
     int pecados[7];
     //Lista de hijos
     NodoPersona* listaHijos[8];
+    //PADRE (Util en el bendito algoritmo de agregar hijos)
+    NodoPersona* padre;
     NodoPersona (int _id, QString _nombre, QString _apellido, QString _pais, QString _continente, QString _creencia, QString _profesion){
         id = _id;
         nombre = _nombre;
@@ -201,6 +202,8 @@ struct NodoPersona {
         setPecados();
         setListaHijos();
         siguiente = nullptr;
+        padre = nullptr;
+        //anterior = nullptr;
     }
     /**
      * @brief setFechaNacimiento
@@ -233,9 +236,9 @@ struct NodoPersona {
 
     /**
      * Establece los pecados en 0
-     * @brief clearPecados
+     * @brief setPecados
      */
-    void clearPecados(){
+    void setPecados(){
         for (int i = 0; i < 7; i++){
             pecados[i] = 0;
         }
@@ -302,7 +305,6 @@ struct ArbolPersonas{
             ? FindInsertionPoint(persona, insertPoint)
             : parent;
     }
-
     void insertarPersona(NodoPersona* persona)  // this should be public
     {
         if(!raiz)
@@ -320,26 +322,38 @@ struct ArbolPersonas{
     }
 
     NodoPersona* obtenerHijo (NodoArbolPersonas* raiz, NodoPersona* personaActual, bool nuevoHijo){
+        //La persona actual es a quien quiero agregar hijos
+
         //GENERADOR BINARIO
         std::mt19937 generadorBinario (time(NULL));
         std::uniform_real_distribution<double> disBinaria(0.0, 1.0);
         if(raiz != nullptr){
             if(raiz->persona->id != personaActual->id){//No puede ser él mismo hijo de él mismo
+                //Reviso si la persona actual y el posible hijo tienen padres.
+                if(raiz->persona->padre != nullptr){
+                    //Significa que ya este tiene un padre, entonces no es un posible hijo
+                    if(disBinaria(generadorBinario) == 0)//Derecha
+                        return obtenerHijo (raiz->hijoDerecho ,personaActual, true);
+                    else
+                        return obtenerHijo (raiz->hijoDerecho ,personaActual, true);
+                }
+
                 //Debo revisar si ya es hijo
-                for (int h = 0; h < 8 ; h++){
-                    if(personaActual->listaHijos[h] != nullptr){
-                        if(raiz->persona->id == personaActual->listaHijos[h]->id)//Significa que ya es hijo de el
+                for (int i = 0; i < 8 ; i++){
+                    if(personaActual->listaHijos[i] != nullptr){
+                        if(raiz->persona->id == personaActual->listaHijos[i]->id)//Significa que ya es hijo de el
                             nuevoHijo = false;//NO ES NUEVO HIJO
                     }
 
                 }
 
                 if(nuevoHijo){
-                    //Reviso si es el padre de la persona
+                    //Reviso si es el padre de la persona actual
                     if(raiz->persona->listaHijos[0] != nullptr){
                         for (int i = 0; i < 8; i++){
                             if(raiz->persona->listaHijos[i] != nullptr){
                                 if(raiz->persona->listaHijos[i]->id == personaActual->id){
+                                    //El ID de uno de los hijos es equivalente al ID de la persona actual
                                     //Si entro acá es porque la persona contenida en la raiz es el padre de la persona a la que intento agregar un hijo
                                     //Debo movilizarme a la izquierda o derecha esto lo hago aleatoriamente
                                     if(disBinaria(generadorBinario) == 0)//Derecha
@@ -363,15 +377,19 @@ struct ArbolPersonas{
                                             }
                                         }
 
-                                    }
+                                    }//Termina el for con j
                                 }//If de abuelos
                             }//Validación
                         }//Termina el for con i
                     }
+
+
+
                     //Si logré salir  del for es porque no es el papa ni el abuelo y entonces puede ser un hijo, PERO debo revisar la nacionalidad
                     //Puede ser también que no tenga hijos
                     if(raiz->persona->pais == personaActual->pais)
-                        return raiz->persona;
+
+                        return raiz->persona;//Finalmente retorno al hijo
                 }
 
             }
@@ -397,7 +415,23 @@ struct ListaPersonas{
 
     }
 
+    void insertarCustom(NodoPersona* personaInsertar){
+        if (primeraPersona == nullptr)
+            primeraPersona = personaInsertar;
+        else{
+            NodoPersona* tmp = primeraPersona;
+            while (tmp->siguiente != nullptr)
+                tmp = tmp->siguiente;
+            tmp->siguiente = personaInsertar;
+        }
+    }
 
+    /**
+     * @brief insertarPersonaCantidad
+     * @param idInicial
+     * @param cantidadPersonas
+     * @return ultimo ID utilizado
+     */
     int insertarPersonaCantidad(int idInicial, int cantidadPersonas){
         srand(time(NULL));
         int randomMil;
@@ -408,32 +442,49 @@ struct ListaPersonas{
 
         NodoPersona* tmp;
         NodoPersona* tmpAnterior;
+        NodoPersona* tmpInsertar;
         bool hayInsertar;
 
+        //(unsigned int)
+
+        /**
         //GENERADOR PARA MIL 1
-        std::mt19937 generadorMil1 (time(NULL));
+        std::mt19937 generadorMil1 ((unsigned int)5+time(NULL)*10);//Nombres
         std::uniform_real_distribution<double> disMil1(1.0, 999.0);
         //GENERADOR PARA MIL 2
-        std::mt19937 generadorMil2 (time(NULL));
+        std::mt19937 generadorMil2 (time(NULL));//Apellidos (unsigned int)
         std::uniform_real_distribution<double> disMil2(0.0, 999.0);
         //GENERADOR PARA CIEN
-        std::mt19937 generadorCien (time(NULL));
+        std::mt19937 generadorCien (time(NULL));//Países    (unsigned int)4*time(NULL)+5
         std::uniform_real_distribution<double> disCien(0.0, 99.0);
         //GENERADOR PARA CINCUENTA
-        std::mt19937 generadorCincuenta (time(NULL));
+        std::mt19937 generadorCincuenta ((unsigned int)1-time(NULL)/8);//Profesiones
         std::uniform_real_distribution<double> disCincuenta(0.0, 49.0);
         //GENERADOR PARA DIEZ
-        std::mt19937 generadorDiez (time(NULL));
+        std::mt19937 generadorDiez ((unsigned int)(4-time(NULL)*2)/12);//Creencias
         std::uniform_real_distribution<double> disDiez(0.0, 9.0);
+        */
 
+        //GENERADOR
+        std::mt19937 generador (time(NULL));
+        //Distribución 1000
+        std::uniform_real_distribution<double> disMil1(1.0, 999.0);//Nombres
+
+        std::uniform_real_distribution<double> disMil2(0.0, 999.0);//Apellidos
+        //Distribución 100
+        std::uniform_real_distribution<double> disCien(0.0, 100.0);//Países
+        //Distribución 50
+        std::uniform_real_distribution<double> disCincuenta(0.0, 49.0);//Profesiones
+        //Distribución 10
+        std::uniform_real_distribution<double> disDiez(0.0, 9.0);//Creencias
 
         for (int i = 0; i < cantidadPersonas; i++){
             qDebug()<<idInicial;
-            randomMil = disMil1(generadorMil1);
-            randomMil2 = disMil2(generadorMil2);
-            randomCien = disCien(generadorCien);
-            randomCincuenta = disCincuenta(generadorCincuenta);
-            randomDiez = disDiez(generadorDiez);
+            randomMil = disMil1(generador);
+            randomMil2 = disMil2(generador);
+            randomCien = disCien(generador);
+            randomCincuenta = disCincuenta(generador);
+            randomDiez = disDiez(generador);
             if(primeraPersona == nullptr)
                 primeraPersona = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
                                                  infoPersona->listaNombres[randomMil],
@@ -442,60 +493,87 @@ struct ListaPersonas{
                                                  infoPersona->listaPaises[randomCien][1],
                                                  infoPersona->listaCreencias[randomDiez],
                                                  infoPersona->listaProfesiones[randomCincuenta]);
+            else if(primeraPersona->siguiente == nullptr){
+                //Este caso solo se va a dar una vez y es cuándo se inserta el  segundo nodo
+                if(primeraPersona->id > infoPersona->randomsUnicos[idInicial]){
+                    //Significa que el que voy a insertar va a la izquierda
+                    tmpInsertar = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
+                            infoPersona->listaNombres[randomMil],
+                            infoPersona->listaApellidos[randomMil2],
+                            infoPersona->listaPaises[randomCien][0],
+                            infoPersona->listaPaises[randomCien][1],
+                            infoPersona->listaCreencias[randomDiez],
+                            infoPersona->listaProfesiones[randomCincuenta]);
+                    tmpInsertar->siguiente = primeraPersona;
 
-            else{
+                    primeraPersona = tmpInsertar;
+                }
+                else{
+                    //Debo insertar a la derecha
+                    tmpInsertar = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
+                            infoPersona->listaNombres[randomMil],
+                            infoPersona->listaApellidos[randomMil2],
+                            infoPersona->listaPaises[randomCien][0],
+                            infoPersona->listaPaises[randomCien][1],
+                            infoPersona->listaCreencias[randomDiez],
+                            infoPersona->listaProfesiones[randomCincuenta]);
+                    primeraPersona->siguiente = tmpInsertar;
 
-                tmp = primeraPersona;
+                }
+            }
+            else{//3 o más nodos
                 tmpAnterior = nullptr;
+                tmp = primeraPersona;
                 hayInsertar = true;
                 while (tmp->siguiente != nullptr){
-                    if(tmp->id > infoPersona->randomsUnicos[idInicial]){//  Debo de insertarlo antes del nodo tmp
-
+                    if(tmp->id > infoPersona->randomsUnicos[idInicial]){
+                        //Debo insertar a la izquierda de tmp
                         if(tmpAnterior == nullptr){
-                            primeraPersona = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
+                            //Nuevo primer lugar
+                            tmpInsertar = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
                                     infoPersona->listaNombres[randomMil],
                                     infoPersona->listaApellidos[randomMil2],
                                     infoPersona->listaPaises[randomCien][0],
                                     infoPersona->listaPaises[randomCien][1],
                                     infoPersona->listaCreencias[randomDiez],
                                     infoPersona->listaProfesiones[randomCincuenta]);
-                            primeraPersona->siguiente = tmp;
+                            tmpInsertar->siguiente = primeraPersona;
+                            primeraPersona = tmpInsertar;
                             hayInsertar = false;
-                            break;
+                            break;//Ya inserté
                         }
-                        else{
+                        else{//Funciona
                             tmpAnterior->siguiente = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
-                                                                    infoPersona->listaNombres[randomMil],
-                                                                    infoPersona->listaApellidos[randomMil2],
-                                                                    infoPersona->listaPaises[randomCien][0],
-                                                                    infoPersona->listaPaises[randomCien][1],
-                                                                    infoPersona->listaCreencias[randomDiez],
-                                                                    infoPersona->listaProfesiones[randomCincuenta]);
+                                    infoPersona->listaNombres[randomMil],
+                                    infoPersona->listaApellidos[randomMil2],
+                                    infoPersona->listaPaises[randomCien][0],
+                                    infoPersona->listaPaises[randomCien][1],
+                                    infoPersona->listaCreencias[randomDiez],
+                                    infoPersona->listaProfesiones[randomCincuenta]);
                             tmpAnterior->siguiente->siguiente = tmp;
                             hayInsertar = false;
-
-                            break;
+                            break;//Ya inserté
                         }
 
                     }
-
                     tmpAnterior = tmp;
                     tmp = tmp->siguiente;
                 }
 
-                //Si llega acá es porque se debe insertar al final
                 if(hayInsertar){
+                    //Si llega acá es porque va a insertar al final
                     tmp->siguiente = new NodoPersona(infoPersona->randomsUnicos[idInicial++],
-                                                     infoPersona->listaNombres[randomMil],
-                                                     infoPersona->listaApellidos[randomMil2],
-                                                     infoPersona->listaPaises[randomCien][0],
-                                                     infoPersona->listaPaises[randomCien][1],
-                                                     infoPersona->listaCreencias[randomDiez],
-                                                     infoPersona->listaProfesiones[randomCincuenta]);
+                            infoPersona->listaNombres[randomMil],
+                            infoPersona->listaApellidos[randomMil2],
+                            infoPersona->listaPaises[randomCien][0],
+                            infoPersona->listaPaises[randomCien][1],
+                            infoPersona->listaCreencias[randomDiez],
+                            infoPersona->listaProfesiones[randomCincuenta]);
+
                 }
 
-            }
-        }
+            }//Fin del else que inserta de la segunda en adelante
+        }//Fin del For
         return idInicial;//Es el último que usó
     }
 
@@ -521,6 +599,7 @@ struct ListaPersonas{
      */
     void generarPecados(){
         if (primeraPersona != nullptr){
+            qDebug()<<"Generando pecados";
             //Temporal con el que recorro la lista
             NodoPersona* tmp = primeraPersona;
             //GENERADOR DE RANDOMS DE 0 - 100
@@ -531,34 +610,26 @@ struct ListaPersonas{
             //Entro al ciclo para recorrer cada humano y de paso le sumo pecados
             while (tmp != nullptr){
 
-                int pecados[7];
-                for(int i = 0;i < 7;i++){
-                    pecados[i] = disPecados(generadorPecados);
-                    tmp->pecados[i] += pecados[i];
-                    for(int j = 0;j < sizeof(tmp->listaHijos)/sizeof(NodoPersona);j++){
-                        for(int k = 0;k < 7;k++){
-                            tmp->listaHijos[j]->pecados[k] = (int) pecados[k]*0.50;
-                        }
-                        for(int l = 0;l < sizeof(tmp->listaHijos[j]->listaHijos)/sizeof(NodoPersona);l++){
-                            for(m = 0;m < 7;m++){
-                                tmp->listaHijos[j]->listaHijos[l]->pecados[m] = (int) pecados[k]*0.50;
-                            }
-                        }
-                    }
-                }
+
+                tmp->pecados[0] += disPecados(generadorPecados);
+
+                tmp->pecados[1] += disPecados(generadorPecados);
+
+                tmp->pecados[2] += disPecados(generadorPecados);
+
+                tmp->pecados[3] += disPecados(generadorPecados);
+
+                tmp->pecados[4] += disPecados(generadorPecados);
+
+                tmp->pecados[5] += disPecados(generadorPecados);
+
+                tmp->pecados[6] += disPecados(generadorPecados);
 
                 //Paso al siguiente humano
                 tmp = tmp -> siguiente;
             }
         }
-    }
 
-    NodoPersona * buscarPersonaID(int ID){
-        NodoPersona * recorreNodos = primeraPersona;
-        while(recorreNodos != NULL && recorreNodos->id != ID){
-            recorreNodos = recorreNodos->siguiente;
-        }
-        return recorreNodos;
     }
 
     NodoPersona* buscarPersonaPos (int posicion){
@@ -567,7 +638,6 @@ struct ListaPersonas{
         for (int i = 0; i <= posicion;i++){
             if(i == posicion)
                 existe = true;
-                break;
             if (tmp->siguiente == nullptr)
                 break;
             tmp = tmp->siguiente;
@@ -577,21 +647,6 @@ struct ListaPersonas{
         else
             return nullptr;
     }
-
-    void borrarListaID(int ID){
-        NodoPersona * recorreNodos = primeraPersona;
-        while(recorreNodos != NULL && recorreNodos->siguiente != NULL && recorreNodos->siguiente->id != ID){
-            recorreNodos = recorreNodos->siguiente;
-        }
-        if(recorreNodos != NULL){
-            if(recorreNodos->siguiente != NULL){
-                NodoPersona * nodoBorrar = recorreNodos->siguiente;
-                recorreNodos->siguiente = recorreNodos->siguiente->siguiente;
-                delete nodoBorrar;
-            }
-        }
-    }
-
     /**
      * @brief cantidadApellido
      * @return La cantidad de personas que poseen ese apellido en específico
@@ -612,6 +667,7 @@ struct ListaPersonas{
         }
     }
 
+    //El limitador sirve para encontrar al que sigue y no encontrar siempre al primero
     NodoPersona* buscarPersonaApellidoLimit (int limitador, QString apellidoBuscar){
         NodoPersona* tmp = primeraPersona;
 
@@ -621,6 +677,19 @@ struct ListaPersonas{
                 if(limitador-- == 0)
                     return tmp;
             }
+            tmp = tmp -> siguiente;
+        }
+        return nullptr;
+
+    }
+
+    NodoPersona* buscarPersonaID (unsigned int id){
+        NodoPersona* tmp = primeraPersona;
+
+        while (tmp != nullptr){
+            if(tmp->id == id)
+                return tmp;
+
             tmp = tmp -> siguiente;
         }
         return nullptr;
@@ -652,9 +721,12 @@ struct ListaPersonas{
             //Tengo el arbol con los appellidos
             cantHijos = disHijos(cantidadHijos);
             for (int i = 0; i < cantHijos; i++){
-                posibleHijo = arbolApellidos->obtenerHijo(arbolApellidos->raiz, personaActual, true);
-                if (posibleHijo != nullptr)
+                posibleHijo = arbolApellidos->obtenerHijo(arbolApellidos->raiz, personaActual, true);//La persona actual es a quien quiero agregar hijos
+                if (posibleHijo != nullptr){
                     personaActual->listaHijos[i] = posibleHijo;
+                    //Le asigno padre
+                    posibleHijo->padre = personaActual;//Personas con mismos padres no pueden ser padres entre ellas. [Uno de los hermanos sea padre del otro hermano]
+                }
                 else
                     break;
             }
@@ -664,265 +736,382 @@ struct ListaPersonas{
 
     }
 
+    NodoPersona* eliminarPersona(unsigned int id){
+
+        if (primeraPersona != nullptr){
+            NodoPersona* tmp = primeraPersona;
+            NodoPersona* tmpAnterior = nullptr;
+            while (tmp->siguiente!= nullptr){
+                if (tmp->id == id){
+                    //Debo eliminar
+                    if (tmpAnterior == nullptr){
+                        //Significa que es la primera persona
+                        tmp->siguiente = nullptr;
+                        return tmp;
+                    }
+                    if(tmp->siguiente == nullptr){
+                        //Es el último
+                        tmpAnterior->siguiente = nullptr;
+                        return tmp;
+                    }
+                    //Está en la mitad
+                    tmpAnterior->siguiente = tmp->siguiente;
+                    tmp->siguiente = nullptr;
+                    return tmp;
+                }
+            }
+        }
+        return nullptr;
+
+    }
+
+};
+/**
+ * @brief The node struct
+ * Programado por Nikolai Ershov
+ * http://kukuruku.co/hub/cpp/avl-trees
+ */
+struct node
+{
+    int key;
+    unsigned char height;
+    node* left;
+    node* right;
+    node(int k) { key = k; left = right = 0; height = 1; }
 };
 
-typedef struct NodoSplay{
-    int dato;
-    NodoPersona * candidatoInfierno;
-    NodoSplay* lchild;
-    NodoSplay* rchild;
+struct arbolAVL{
 
-    NodoSplay(NodoPersona * candidato){
-        this->dato = candidato->id;
-        this->candidatoInfierno = candidato;
-        this->lchild = NULL;
-        this->rchild = NULL;
+    node* raiz;
+
+    arbolAVL(){
+        raiz = nullptr;
     }
 
-    NodoSplay(){
-        this->dato = -1;
-        this->lchild = this->rchild = NULL;
+    //Metodos
+    unsigned char height(node* p)
+    {
+        return p?p->height:0;
     }
 
-}NodoSplay;
-
-
-
-typedef struct Splay{
-
-    NodoSplay * raiz;
-
-    Splay(){
-        this->raiz = NULL;
+    int bfactor(node* p)
+    {
+        return height(p->right)-height(p->left);
     }
 
-    void insertarNodo(NodoPersona * candidato){
-        if(candidato != NULL)
-            this->raiz = this->Insert(candidato->id,this->raiz,candidato);
+    void fixheight(node* p)
+    {
+        unsigned char hl = height(p->left);
+        unsigned char hr = height(p->right);
+        p->height = (hl>hr?hl:hr)+1;
     }
 
-    void borrarNodo(int dato){
-        this->raiz = this->Delete(dato,this->raiz);
+    node* rotateright(node* p)
+    {
+        node* q = p->left;
+        p->left = q->right;
+        q->right = p;
+        fixheight(p);
+        fixheight(q);
+        return q;
     }
 
-    // RR(Y rotates to the right)
-    NodoSplay* RR_Rotate(NodoSplay* k2){
-        NodoSplay* k1 = k2->lchild;
-        k2->lchild = k1->rchild;
-        k1->rchild = k2;
-        return k1;
+    node* rotateleft(node* q)
+    {
+        node* p = q->right;
+        q->right = p->left;
+        p->left = q;
+        fixheight(q);
+        fixheight(p);
+        return p;
     }
 
-    // LL(Y rotates to the left)
-    NodoSplay* LL_Rotate(NodoSplay* k2){
-        NodoSplay* k1 = k2->rchild;
-        k2->rchild = k1->lchild;
-        k1->lchild = k2;
-        return k1;
-    }
-
-    // An implementation of top-down splay tree
-    NodoSplay * manipularArbol(int dato, NodoSplay* root){
-        if (!root)
-            return NULL;
-        NodoSplay * header = new NodoSplay();
-        /* header.rchild points to L tree;
-        header->lchild points to R Tree */
-        header->lchild = header->rchild = NULL;
-        NodoSplay* LeftTreeMax = header;
-        NodoSplay* RightTreeMin = header;
-        while (1)
+    node* balance(node* p) // balancing the p node
+    {
+        fixheight(p);
+        if( bfactor(p)==2 )
         {
-            if (dato < root->dato)
-            {
-                if (!root->lchild)
-                    break;
-                if (dato < root->lchild->dato)
-                {
-                    root = RR_Rotate(root);
-                    // only zig-zig mode need to rotate once,
-                    if (!root->lchild)
-                        break;
-                }
-                /* Link to R Tree */
-                RightTreeMin->lchild = root;
-                RightTreeMin = RightTreeMin->lchild;
-                root = root->lchild;
-                RightTreeMin->lchild = NULL;
-            }
-            else if (dato > root->dato)
-            {
-                if (!root->rchild)
-                    break;
-                if (dato > root->rchild->dato)
-                {
-                    root = LL_Rotate(root);
-                    // only zag-zag mode need to rotate once,
-                    if (!root->rchild)
-                        break;
-                }
-                /* Link to L Tree */
-                LeftTreeMax->rchild = root;
-                LeftTreeMax = LeftTreeMax->rchild;
-                root = root->rchild;
-                LeftTreeMax->rchild = NULL;
-            }
-            else
-                break;
+            if( bfactor(p->right) < 0 )
+                p->right = rotateright(p->right);
+            return rotateleft(p);
         }
-        /* assemble L Tree, Middle Tree and R tree */
-        LeftTreeMax->rchild = root->lchild;
-        RightTreeMin->lchild = root->rchild;
-        root->lchild = header->rchild;
-        root->rchild = header->lchild;
-        return root;
+        if( bfactor(p)==-2 )
+        {
+            if( bfactor(p->left) > 0  )
+                p->left = rotateleft(p->left);
+            return rotateright(p);
+        }
+        return p; // balancing is not required
     }
 
-    NodoSplay* Insert(int dato, NodoSplay * root,NodoPersona * candidato){
+    node* insertar (int k){
+        return insert(raiz, k);
+    }
 
-        static NodoSplay * p_node = NULL;
-        if (!p_node)
-            p_node = new NodoSplay(candidato);
-        else{
-            p_node->dato = dato;
-            p_node->candidatoInfierno = candidato;
-        }
-        if (!root){
-            root = p_node;
-            p_node = NULL;
-            return root;
-        }
-        root = manipularArbol(dato, root);
-        /* This is BsplayPrueba that, all datos <= root->dato is in root->lchild, all datos >
-        root->dato is in root->rchild. */
-        if (dato < root->dato){
-            p_node->lchild = root->lchild;
-            p_node->rchild = root;
-            root->lchild = NULL;
-            root = p_node;
-        }
-        else if (dato > root->dato){
-            p_node->rchild = root->rchild;
-            p_node->lchild = root;
-            root->rchild = NULL;
-            root = p_node;
-        }
+    node* insert(node* p, int k) // insert k key in a tree with p root
+    {
+        if( !p ) return new node(k);
+        if( k<p->key )
+            p->left = insert(p->left,k);
         else
-            return root;
-        p_node = NULL;
-        return root;
+            p->right = insert(p->right,k);
+        return balance(p);
     }
 
-    NodoSplay * Delete(int dato, NodoSplay* root)
+    node* findmin(node* p) // find a node with minimal key in a p tree
     {
-        NodoSplay* temp;
-        if (!root)
-            return NULL;
-        root = manipularArbol(dato, root);
-        if (dato != root->dato)
-            return root;
+        return p->left?findmin(p->left):p;
+    }
+
+    node* removemin(node* p) // deleting a node with minimal key from a p tree
+    {
+        if( p->left==0 )
+            return p->right;
+        p->left = removemin(p->left);
+        return balance(p);
+    }
+
+    node* remover (int k){
+        return remove(raiz, k);
+    }
+
+    node* remove(node* p, int k) // deleting k key from p tree
+    {
+        if( !p ) return 0;
+        if( k < p->key )
+            p->left = remove(p->left,k);
+        else if( k > p->key )
+            p->right = remove(p->right,k);
+        else //  k == p->key
+        {
+            node* q = p->left;
+            node* r = p->right;
+            delete p;
+            if( !r ) return q;
+            node* min = findmin(raiz);
+            min->right = removemin(raiz);
+            min->left = q;
+            return balance(min);
+        }
+        return balance(p);
+    }
+};
+
+
+//PARAÍSO
+struct NodoPersonaAVL
+{
+    unsigned int key;
+    unsigned char height;
+    NodoPersonaAVL* left;
+    NodoPersonaAVL* right;
+    //La persona
+    NodoPersona* persona;
+    //Constructor
+    NodoPersonaAVL(int k){
+        key = k;
+        left = right = 0;
+        height = 1;
+    }
+    NodoPersonaAVL(NodoPersona* _persona){
+        persona = _persona;
+        key = _persona->id;
+        left = right = 0;
+        height = 1;
+    }
+
+};
+
+struct ArbolPersonasAVL{
+
+    NodoPersonaAVL* raiz;
+
+    ArbolPersonasAVL(){
+        raiz = nullptr;
+    }
+
+    //Metodos
+    /**
+     * @brief height
+     * @param p
+     * @return
+     */
+    unsigned char height(NodoPersonaAVL* p)
+    {
+        return p?p->height:0;
+    }
+
+    /**
+     * @brief bfactor
+     * @param p
+     * @return
+     */
+    int bfactor(NodoPersonaAVL* p)
+    {
+        return height(p->right)-height(p->left);
+    }
+    /**
+     * @brief fixheight
+     * @param p
+     */
+    void fixheight(NodoPersonaAVL* p)
+    {
+        unsigned char hl = height(p->left);
+        unsigned char hr = height(p->right);
+        p->height = (hl>hr?hl:hr)+1;
+    }
+    /**
+     * @brief rotateright
+     * @param p
+     * @return
+     */
+    NodoPersonaAVL* rotateright(NodoPersonaAVL* p)
+    {
+        NodoPersonaAVL* q = p->left;
+        p->left = q->right;
+        q->right = p;
+        fixheight(p);
+        fixheight(q);
+        return q;
+    }
+    /**
+     * @brief rotateleft
+     * @param q
+     * @return
+     */
+    NodoPersonaAVL* rotateleft(NodoPersonaAVL* q)
+    {
+        NodoPersonaAVL* p = q->right;
+        q->right = p->left;
+        p->left = q;
+        fixheight(q);
+        fixheight(p);
+        return p;
+    }
+    /**
+     * @brief balance
+     * @param p
+     * @return
+     */
+    NodoPersonaAVL* balance(NodoPersonaAVL* p) // balancing the p node
+    {
+        fixheight(p);
+        if( bfactor(p)==2 )
+        {
+            if( bfactor(p->right) < 0 )
+                p->right = rotateright(p->right);
+            return rotateleft(p);
+        }
+        if( bfactor(p)==-2 )
+        {
+            if( bfactor(p->left) > 0  )
+                p->left = rotateleft(p->left);
+            return rotateright(p);
+        }
+        return p; // balancing is not required
+    }
+    /**
+     * @brief insertar
+     * AUXILIAR
+     * @param k
+     * @return
+     */
+    NodoPersonaAVL* insertar (NodoPersona* persona){
+        return insert(raiz, persona);
+    }
+    /**
+     * @brief insert
+     * @param p
+     * @param k
+     * @return
+     */
+    NodoPersonaAVL* insert(NodoPersonaAVL* p, NodoPersona* persona) // insert k key in a tree with p root
+    {
+        if( !p )
+            return new NodoPersonaAVL(persona);
+        if( persona->id < p->key )
+            p->left = insert(p->left,persona);
         else
+            p->right = insert(p->right,persona);
+        return balance(p);
+    }
+    /**
+     * @brief findmin
+     * @param p
+     * @return
+     */
+    NodoPersonaAVL* findmin(NodoPersonaAVL* p) // find a node with minimal key in a p tree
+    {
+        return p->left?findmin(p->left):p;
+    }
+    /**
+     * @brief removemin
+     * @param p
+     * @return
+     */
+    NodoPersonaAVL* removemin(NodoPersonaAVL* p) // deleting a node with minimal key from a p tree
+    {
+        if( p->left==0 )
+            return p->right;
+        p->left = removemin(p->left);
+        return balance(p);
+    }
+    /**
+     * @brief remover
+     * AUXILIAR
+     * @param k
+     * @return
+     */
+    NodoPersonaAVL* remover (int k){
+        return remove(raiz, k);
+    }
+    /**
+     * @brief remove
+     * @param p
+     * @param k
+     * @return
+     */
+    NodoPersonaAVL* remove(NodoPersonaAVL* p, unsigned int k) // deleting k key from p tree
+    {
+        if( !p ) return 0;
+        if( k < p->key )
+            p->left = remove(p->left,k);
+        else if( k > p->key )
+            p->right = remove(p->right,k);
+        else //  k == p->key
         {
-            if (!root->lchild)
-            {
-                temp = root;
-                root = root->rchild;
-            }
-            else
-            {
-                temp = root;
-                /*Note: Since dato == root->dato,
-                so after Splay(dato, root->lchild),
-                the tree we get will have no right child tree.*/
-                root = manipularArbol(dato, root->lchild);
-                root->rchild = temp->rchild;
-            }
-            free(temp);
-            return root;
+            NodoPersonaAVL* q = p->left;
+            NodoPersonaAVL* r = p->right;
+            delete p;
+            if( !r ) return q;
+            NodoPersonaAVL* min = findmin(raiz);
+            min->right = removemin(raiz);
+            min->left = q;
+            return balance(min);
+        }
+        return balance(p);
+    }
+    //Método exclusivo para el arbol mundo
+    void insertarMundo (ListaPersonas* listaMundo){
+        //Primero debo conocer que potencia de 2 debo utilizar
+        int potencia2 = 1;
+        int corte = listaMundo->largo()/potencia2;
+        int porcentaje1 = listaMundo->largo() * 0.01;
+        while (porcentaje1/potencia2 > 1){
+            potencia2 = potencia2 * 2;
+        }
+        corte = listaMundo->largo()/potencia2;
+        int desplazamiento = 0;
+        //Como tengo la potencia de dos exacta voy a utilizar esta para realizar el corte
+        for (int i = 0; i < potencia2-1; i++){//La potencia me indica la cantidad de nodos a insertar, pero hay que restarle 1
+            raiz = insertar(listaMundo->buscarPersonaPos(desplazamiento));
+            desplazamiento += corte;
+
         }
     }
 
-    NodoSplay * Search(int dato, NodoSplay* root)
-    {
-        return manipularArbol(dato, root);
-    }
+};
 
-    void enOrden(){
-        InOrder(this->raiz);
-    }
 
-    void InOrder(NodoSplay * root){
-        if (root){
-            InOrder(root->lchild);
-            cout<< "dato: " <<root->dato;
-            if(root->lchild)
-                cout<< " | left child: "<< root->lchild->dato;
-            if(root->rchild)
-                cout << " | right child: " << root->rchild->dato;
-            cout<< "\n";
-            InOrder(root->rchild);
-        }
-    }
-
-    NodoSplay * buscarNodo(int dato){
-        return this->Search(dato,this->raiz);
-    }
-
-}Splay;
-
-typedef struct Infierno{
-    Splay * splayBusqueda;
-
-    Infierno(){
-        this->splayBusqueda = NULL;
-    }
-
-    Splay * getSplayInfierno(){
-        return this->splayBusqueda;
-    }
-
-}Infierno;
-
-//--------------------------------------------------------------------
-//Inicio del Heap
-//--------------------------------------------------------------------
-void convertirAMaxHeap(int arreglo[], int i, int n){
-    int j, temp;
-    temp = arreglo[i];
-    j = 2 * i;
-    while (j <= n)
-    {
-        if (j < n && arreglo[j+1] > arreglo[j])
-            j = j + 1;
-        if (temp > arreglo[j])
-            break;
-        else if (temp <= arreglo[j])
-        {
-            arreglo[j / 2] = arreglo[j];
-            j = 2 * j;
-        }
-    }
-    arreglo[j/2] = temp;
-    return;
-}
-
-void crearMaxHeap(int arreglo[],int n){
-    int i;
-    for(i = n/2; i >= 1; i--)
-    {
-        convertirAMaxHeap(arreglo,i,n);
-    }
-}
-
-void imprimirHeap(int listaHeap[]){
-    cout<<"Max Heap\n";
-    for(unsigned int i = 1; i <= (sizeof(listaHeap)/sizeof(listaHeap[0]));i++){
-        cout <<listaHeap[i]<<endl;
-    }
-}
-
-//--------------------------------------------------------------------
-//Fin del Heap
-//--------------------------------------------------------------------
 
 #endif // ESTRUCTURAS_H

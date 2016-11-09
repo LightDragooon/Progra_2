@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaFamilia</class>
+ <widget class="QDialog" name="VentanaFamilia">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1058</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QTableWidget" name="abuelo">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>60</y>
+     <width>981</width>
+     <height>161</height>
+    </rect>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>35</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nombre</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Apellido</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>País</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Creencia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Profesión</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Correo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nacimiento</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Hijos/Hijas</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Lujuria</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Gula</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Avaricia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Pereza</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Ira</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Envidia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Soberbia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Total pecados</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="hijos">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>270</y>
+     <width>981</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>35</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nombre</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Apellido</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>País</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Creencia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Profesión</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Correo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nacimiento</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Hijos/Hijas</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Lujuria</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Gula</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Avaricia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Pereza</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Ira</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Envidia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Soberbia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Total pecados</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="nietos">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>550</y>
+     <width>981</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>35</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nombre</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Apellido</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>País</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Creencia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Profesión</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Correo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nacimiento</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Hijos/Hijas</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Lujuria</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Gula</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Avaricia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Pereza</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Ira</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Envidia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Soberbia</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>520</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Nietos/Nietas</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>240</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Hijos/Hijas</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>10</y>
+     <width>231</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>El abuelo / La abuela</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
