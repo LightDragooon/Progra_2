@@ -14,18 +14,21 @@ struct Mundo {
         infierno = new Infierno();
     }
 
+
+
     /**
      * Esta función lo que hace es agarrar la lista de personas y condenarlas por país
      * Esta función llama a condenar país con todos los países definidos en la lista de países
      * @brief condenar
-     * @return Tal vez haga que retorne la cantidad de condenados
+     * @return Cantidad Total de condenados
      */
     int condenar(){
         int condenados = 0;
         for(int i = 0;i < 100;i++){
-            QString pais = planetaTierra->infoPersona->listaPaises[i];
+            QString pais = planetaTierra->infoPersona->listaPaises[i][0];
             condenados = condenados + condenarPais(pais);
         }
+        return condenados;
     }
 
     /**
@@ -34,13 +37,13 @@ struct Mundo {
      * Luego de esto se sacará el 25% del heap y se enviarán al infierno
      * @brief condenarPais
      * @param paisACondenar El país que se desea condenar
-     * @return Tal vez la cantidad de condenados en este país
+     * @return Cantidad de condenados en este país
      */
     int condenarPais(QString paisACondenar){
         int listaParaHeap[planetaTierra->largo()];
         int posicionEscrituraHeap = 0;
         for(int i = 0;i < planetaTierra->largo();i++){
-            heap[i] = -1;
+            listaParaHeap[i] = -1;
         }
         for(int i = 0;i < planetaTierra->largo();i++){
             NodoPersona * personaACondenar = planetaTierra->buscarPersonaPos(i);
@@ -54,15 +57,12 @@ struct Mundo {
             heapLimpio[i] = listaParaHeap[i];
         }
         crearMaxHeap(heapLimpio,posicionEscrituraHeap+1);
-        delete listaParaHeap;
         int cantidadCondenados = (int)(posicionEscrituraHeap+1)*0.25;
         int condenados[cantidadCondenados];
         for(int i = 0;i < cantidadCondenados;i++){
             condenados[i] = heapLimpio[i];
         }
         moverAlInfierno(condenados,cantidadCondenados);
-        delete posicionEscrituraHeap;
-        delete condenados;
         return cantidadCondenados;
     }
 
@@ -70,6 +70,7 @@ struct Mundo {
         for(int i = 0;i < cantidadCondenados;i++){
             infierno->splayBusqueda->insertarNodo(planetaTierra->buscarPersonaID(heap[i]));
             planetaTierra->borrarListaID(heap[i]);
+            //aquí va la línea que sabe borrarlo del árbol
         }
     }
 };
