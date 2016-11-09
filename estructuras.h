@@ -8,8 +8,11 @@
 #include <QFile>//Manejo de archivos
 #include <QMessageBox>
 #include <QTextStream>
-
+#include <iostream>
 #include <QDebug>
+
+using namespace std;
+
 struct InformacionPersona;
 struct NodoPersona;
 struct ListaPersonas;
@@ -230,9 +233,9 @@ struct NodoPersona {
 
     /**
      * Establece los pecados en 0
-     * @brief setPecados
+     * @brief clearPecados
      */
-    void setPecados(){
+    void clearPecados(){
         for (int i = 0; i < 7; i++){
             pecados[i] = 0;
         }
@@ -528,26 +531,34 @@ struct ListaPersonas{
             //Entro al ciclo para recorrer cada humano y de paso le sumo pecados
             while (tmp != nullptr){
 
-
-                tmp->pecados[0] += disPecados(generadorPecados);
-
-                tmp->pecados[1] += disPecados(generadorPecados);
-
-                tmp->pecados[2] += disPecados(generadorPecados);
-
-                tmp->pecados[3] += disPecados(generadorPecados);
-
-                tmp->pecados[4] += disPecados(generadorPecados);
-
-                tmp->pecados[5] += disPecados(generadorPecados);
-
-                tmp->pecados[6] += disPecados(generadorPecados);
+                int pecados[7];
+                for(int i = 0;i < 7;i++){
+                    pecados[i] = disPecados(generadorPecados);
+                    tmp->pecados[i] += pecados[i];
+                    for(int j = 0;j < sizeof(tmp->listaHijos)/sizeof(NodoPersona);j++){
+                        for(int k = 0;k < 7;k++){
+                            tmp->listaHijos[j]->pecados[k] = (int) pecados[k]*0.50;
+                        }
+                        for(int l = 0;l < sizeof(tmp->listaHijos[j]->listaHijos)/sizeof(NodoPersona);l++){
+                            for(m = 0;m < 7;m++){
+                                tmp->listaHijos[j]->listaHijos[l]->pecados[m] = (int) pecados[k]*0.50;
+                            }
+                        }
+                    }
+                }
 
                 //Paso al siguiente humano
                 tmp = tmp -> siguiente;
             }
         }
+    }
 
+    NodoPersona * buscarPersonaID(int ID){
+        NodoPersona * recorreNodos = primeraPersona;
+        while(recorreNodos != NULL && recorreNodos->id != ID){
+            recorreNodos = recorreNodos->siguiente;
+        }
+        return recorreNodos;
     }
 
     NodoPersona* buscarPersonaPos (int posicion){
@@ -556,6 +567,7 @@ struct ListaPersonas{
         for (int i = 0; i <= posicion;i++){
             if(i == posicion)
                 existe = true;
+                break;
             if (tmp->siguiente == nullptr)
                 break;
             tmp = tmp->siguiente;
@@ -565,6 +577,21 @@ struct ListaPersonas{
         else
             return nullptr;
     }
+
+    void borrarListaID(int ID){
+        NodoPersona * recorreNodos = primeraPersona;
+        while(recorreNodos != NULL && recorreNodos->siguiente != NULL && recorreNodos->siguiente->id != ID){
+            recorreNodos = recorreNodos->siguiente;
+        }
+        if(recorreNodos != NULL){
+            if(recorreNodos->siguiente != NULL){
+                NodoPersona * nodoBorrar = recorreNodos->siguiente;
+                recorreNodos->siguiente = recorreNodos->siguiente->siguiente;
+                delete nodoBorrar;
+            }
+        }
+    }
+
     /**
      * @brief cantidadApellido
      * @return La cantidad de personas que poseen ese apellido en específico
@@ -639,14 +666,263 @@ struct ListaPersonas{
 
 };
 
+typedef struct NodoSplay{
+    int dato;
+    NodoPersona * candidatoInfierno;
+    NodoSplay* lchild;
+    NodoSplay* rchild;
+
+    NodoSplay(NodoPersona * candidato){
+        this->dato = candidato->id;
+        this->candidatoInfierno = candidato;
+        this->lchild = NULL;
+        this->rchild = NULL;
+    }
+
+    NodoSplay(){
+        this->dato = -1;
+        this->lchild = this->rchild = NULL;
+    }
+
+}NodoSplay;
 
 
 
+typedef struct Splay{
 
+    NodoSplay * raiz;
 
+    Splay(){
+        this->raiz = NULL;
+    }
 
+    void insertarNodo(NodoPersona * candidato){
+        if(candidato != NULL)
+            this->raiz = this->Insert(candidato->id,this->raiz,candidato);
+    }
 
+    void borrarNodo(int dato){
+        this->raiz = this->Delete(dato,this->raiz);
+    }
 
+    // RR(Y rotates to the right)
+    NodoSplay* RR_Rotate(NodoSplay* k2){
+        NodoSplay* k1 = k2->lchild;
+        k2->lchild = k1->rchild;
+        k1->rchild = k2;
+        return k1;
+    }
 
+    // LL(Y rotates to the left)
+    NodoSplay* LL_Rotate(NodoSplay* k2){
+        NodoSplay* k1 = k2->rchild;
+        k2->rchild = k1->lchild;
+        k1->lchild = k2;
+        return k1;
+    }
+
+    // An implementation of top-down splay tree
+    NodoSplay * manipularArbol(int dato, NodoSplay* root){
+        if (!root)
+            return NULL;
+        NodoSplay * header = new NodoSplay();
+        /* header.rchild points to L tree;
+        header->lchild points to R Tree */
+        header->lchild = header->rchild = NULL;
+        NodoSplay* LeftTreeMax = header;
+        NodoSplay* RightTreeMin = header;
+        while (1)
+        {
+            if (dato < root->dato)
+            {
+                if (!root->lchild)
+                    break;
+                if (dato < root->lchild->dato)
+                {
+                    root = RR_Rotate(root);
+                    // only zig-zig mode need to rotate once,
+                    if (!root->lchild)
+                        break;
+                }
+                /* Link to R Tree */
+                RightTreeMin->lchild = root;
+                RightTreeMin = RightTreeMin->lchild;
+                root = root->lchild;
+                RightTreeMin->lchild = NULL;
+            }
+            else if (dato > root->dato)
+            {
+                if (!root->rchild)
+                    break;
+                if (dato > root->rchild->dato)
+                {
+                    root = LL_Rotate(root);
+                    // only zag-zag mode need to rotate once,
+                    if (!root->rchild)
+                        break;
+                }
+                /* Link to L Tree */
+                LeftTreeMax->rchild = root;
+                LeftTreeMax = LeftTreeMax->rchild;
+                root = root->rchild;
+                LeftTreeMax->rchild = NULL;
+            }
+            else
+                break;
+        }
+        /* assemble L Tree, Middle Tree and R tree */
+        LeftTreeMax->rchild = root->lchild;
+        RightTreeMin->lchild = root->rchild;
+        root->lchild = header->rchild;
+        root->rchild = header->lchild;
+        return root;
+    }
+
+    NodoSplay* Insert(int dato, NodoSplay * root,NodoPersona * candidato){
+
+        static NodoSplay * p_node = NULL;
+        if (!p_node)
+            p_node = new NodoSplay(candidato);
+        else{
+            p_node->dato = dato;
+            p_node->candidatoInfierno = candidato;
+        }
+        if (!root){
+            root = p_node;
+            p_node = NULL;
+            return root;
+        }
+        root = manipularArbol(dato, root);
+        /* This is BsplayPrueba that, all datos <= root->dato is in root->lchild, all datos >
+        root->dato is in root->rchild. */
+        if (dato < root->dato){
+            p_node->lchild = root->lchild;
+            p_node->rchild = root;
+            root->lchild = NULL;
+            root = p_node;
+        }
+        else if (dato > root->dato){
+            p_node->rchild = root->rchild;
+            p_node->lchild = root;
+            root->rchild = NULL;
+            root = p_node;
+        }
+        else
+            return root;
+        p_node = NULL;
+        return root;
+    }
+
+    NodoSplay * Delete(int dato, NodoSplay* root)
+    {
+        NodoSplay* temp;
+        if (!root)
+            return NULL;
+        root = manipularArbol(dato, root);
+        if (dato != root->dato)
+            return root;
+        else
+        {
+            if (!root->lchild)
+            {
+                temp = root;
+                root = root->rchild;
+            }
+            else
+            {
+                temp = root;
+                /*Note: Since dato == root->dato,
+                so after Splay(dato, root->lchild),
+                the tree we get will have no right child tree.*/
+                root = manipularArbol(dato, root->lchild);
+                root->rchild = temp->rchild;
+            }
+            free(temp);
+            return root;
+        }
+    }
+
+    NodoSplay * Search(int dato, NodoSplay* root)
+    {
+        return manipularArbol(dato, root);
+    }
+
+    void enOrden(){
+        InOrder(this->raiz);
+    }
+
+    void InOrder(NodoSplay * root){
+        if (root){
+            InOrder(root->lchild);
+            cout<< "dato: " <<root->dato;
+            if(root->lchild)
+                cout<< " | left child: "<< root->lchild->dato;
+            if(root->rchild)
+                cout << " | right child: " << root->rchild->dato;
+            cout<< "\n";
+            InOrder(root->rchild);
+        }
+    }
+
+    NodoSplay * buscarNodo(int dato){
+        return this->Search(dato,this->raiz);
+    }
+
+}Splay;
+
+typedef struct Infierno{
+    Splay * splayBusqueda;
+
+    Infierno(){
+        this->splayBusqueda = NULL;
+    }
+
+    Splay * getSplayInfierno(){
+        return this->splayBusqueda;
+    }
+
+}Infierno;
+
+//--------------------------------------------------------------------
+//Inicio del Heap
+//--------------------------------------------------------------------
+void convertirAMaxHeap(int arreglo[], int i, int n){
+    int j, temp;
+    temp = arreglo[i];
+    j = 2 * i;
+    while (j <= n)
+    {
+        if (j < n && arreglo[j+1] > arreglo[j])
+            j = j + 1;
+        if (temp > arreglo[j])
+            break;
+        else if (temp <= arreglo[j])
+        {
+            arreglo[j / 2] = arreglo[j];
+            j = 2 * j;
+        }
+    }
+    arreglo[j/2] = temp;
+    return;
+}
+
+void crearMaxHeap(int arreglo[],int n){
+    int i;
+    for(i = n/2; i >= 1; i--)
+    {
+        convertirAMaxHeap(arreglo,i,n);
+    }
+}
+
+void imprimirHeap(int listaHeap[]){
+    cout<<"Max Heap\n";
+    for(unsigned int i = 1; i <= (sizeof(listaHeap)/sizeof(listaHeap[0]));i++){
+        cout <<listaHeap[i]<<endl;
+    }
+}
+
+//--------------------------------------------------------------------
+//Fin del Heap
+//--------------------------------------------------------------------
 
 #endif // ESTRUCTURAS_H
