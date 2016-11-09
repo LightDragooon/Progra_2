@@ -7,72 +7,21 @@
  */
 struct Mundo {
     ListaPersonas* planetaTierra;//Los humanos y su información
-    Infierno * infierno;//Todos los que están en el infierno
-
+    ArbolPersonasAVL* paraisoMundo;
+    arbolAVL* arbolVida;
+    arbolAVL* arbolMundo;
+    Splay* infierno;
     Mundo(){
+
         planetaTierra = new ListaPersonas();
-        infierno = new Infierno();
+        arbolMundo = new arbolAVL();
+        paraisoMundo = new ArbolPersonasAVL();
+        arbolVida = new arbolAVL();
+        infierno = new Splay();
+
+
     }
 
-
-
-    /**
-     * Esta función lo que hace es agarrar la lista de personas y condenarlas por país
-     * Esta función llama a condenar país con todos los países definidos en la lista de países
-     * @brief condenar
-     * @return Cantidad Total de condenados
-     */
-    int condenar(){
-        int condenados = 0;
-        for(int i = 0;i < 100;i++){
-            QString pais = planetaTierra->infoPersona->listaPaises[i][0];
-            condenados = condenados + condenarPais(pais);
-        }
-        return condenados;
-    }
-
-    /**
-     * Esta función va a condenar un país a la vez, lo que hace es que busca en
-     * toda la lista todos las personas cuyo país coincida con el heap que se está formando
-     * Luego de esto se sacará el 25% del heap y se enviarán al infierno
-     * @brief condenarPais
-     * @param paisACondenar El país que se desea condenar
-     * @return Cantidad de condenados en este país
-     */
-    int condenarPais(QString paisACondenar){
-        int listaParaHeap[planetaTierra->largo()];
-        int posicionEscrituraHeap = 0;
-        for(int i = 0;i < planetaTierra->largo();i++){
-            listaParaHeap[i] = -1;
-        }
-        for(int i = 0;i < planetaTierra->largo();i++){
-            NodoPersona * personaACondenar = planetaTierra->buscarPersonaPos(i);
-            if(QString::compare(paisACondenar,personaACondenar->pais,Qt::CaseInsensitive)){
-                listaParaHeap[posicionEscrituraHeap] = personaACondenar->id;
-                posicionEscrituraHeap++;
-            }
-        }
-        int heapLimpio[posicionEscrituraHeap+1];
-        for(int i = 0;i < posicionEscrituraHeap+1;i++){
-            heapLimpio[i] = listaParaHeap[i];
-        }
-        crearMaxHeap(heapLimpio,posicionEscrituraHeap+1);
-        int cantidadCondenados = (int)(posicionEscrituraHeap+1)*0.25;
-        int condenados[cantidadCondenados];
-        for(int i = 0;i < cantidadCondenados;i++){
-            condenados[i] = heapLimpio[i];
-        }
-        moverAlInfierno(condenados,cantidadCondenados);
-        return cantidadCondenados;
-    }
-
-    void moverAlInfierno(int heap[],int cantidadCondenados){
-        for(int i = 0;i < cantidadCondenados;i++){
-            infierno->splayBusqueda->insertarNodo(planetaTierra->buscarPersonaID(heap[i]));
-            planetaTierra->borrarListaID(heap[i]);
-            //aquí va la línea que sabe borrarlo del árbol
-        }
-    }
 };
 
 #endif // EL_MUNDO_H
