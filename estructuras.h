@@ -198,7 +198,7 @@ struct NodoPersona {
         profesion = _profesion;
         correo = setCorreo(_continente);
         fechaNacimiento = setFechaNacimiento();
-        setPecados();
+        clearPecados();
         setListaHijos();
         siguiente = nullptr;
     }
@@ -528,20 +528,21 @@ struct ListaPersonas{
             std::uniform_real_distribution<double> disPecados(0.0, 101.0);
 
 
+
             //Entro al ciclo para recorrer cada humano y de paso le sumo pecados
             while (tmp != nullptr){
 
                 int pecados[7];
-                for(int i = 0;i < 7;i++){
+                for(unsigned int i = 0;i < 7;i++){
                     pecados[i] = disPecados(generadorPecados);
                     tmp->pecados[i] += pecados[i];
-                    for(int j = 0;j < sizeof(tmp->listaHijos)/sizeof(NodoPersona);j++){
+                    for(unsigned int j = 0;j < sizeof(tmp->listaHijos)/sizeof(NodoPersona);j++){
                         for(int k = 0;k < 7;k++){
                             tmp->listaHijos[j]->pecados[k] = (int) pecados[k]*0.50;
                         }
-                        for(int l = 0;l < sizeof(tmp->listaHijos[j]->listaHijos)/sizeof(NodoPersona);l++){
-                            for(m = 0;m < 7;m++){
-                                tmp->listaHijos[j]->listaHijos[l]->pecados[m] = (int) pecados[k]*0.50;
+                        for(unsigned int l = 0;l < sizeof(tmp->listaHijos[j]->listaHijos)/sizeof(NodoPersona);l++){
+                            for(int m = 0;m < 7;m++){
+                                tmp->listaHijos[j]->listaHijos[l]->pecados[m] = (int) pecados[m]*0.25;
                             }
                         }
                     }
@@ -553,7 +554,7 @@ struct ListaPersonas{
         }
     }
 
-    NodoPersona * buscarPersonaID(int ID){
+    NodoPersona * buscarPersonaID(unsigned int ID){
         NodoPersona * recorreNodos = primeraPersona;
         while(recorreNodos != NULL && recorreNodos->id != ID){
             recorreNodos = recorreNodos->siguiente;
@@ -578,7 +579,7 @@ struct ListaPersonas{
             return nullptr;
     }
 
-    void borrarListaID(int ID){
+    void borrarListaID(unsigned int ID){
         NodoPersona * recorreNodos = primeraPersona;
         while(recorreNodos != NULL && recorreNodos->siguiente != NULL && recorreNodos->siguiente->id != ID){
             recorreNodos = recorreNodos->siguiente;
@@ -886,7 +887,7 @@ typedef struct Infierno{
 //--------------------------------------------------------------------
 //Inicio del Heap
 //--------------------------------------------------------------------
-void convertirAMaxHeap(int arreglo[], int i, int n){
+static void convertirAMaxHeap(int arreglo[], int i, int n){
     int j, temp;
     temp = arreglo[i];
     j = 2 * i;
@@ -906,7 +907,7 @@ void convertirAMaxHeap(int arreglo[], int i, int n){
     return;
 }
 
-void crearMaxHeap(int arreglo[],int n){
+static void crearMaxHeap(int arreglo[],int n){
     int i;
     for(i = n/2; i >= 1; i--)
     {
@@ -914,12 +915,14 @@ void crearMaxHeap(int arreglo[],int n){
     }
 }
 
-void imprimirHeap(int listaHeap[]){
+/*
+static void imprimirHeap(int listaHeap[]){
     cout<<"Max Heap\n";
     for(unsigned int i = 1; i <= (sizeof(listaHeap)/sizeof(listaHeap[0]));i++){
         cout <<listaHeap[i]<<endl;
     }
 }
+*/
 
 //--------------------------------------------------------------------
 //Fin del Heap
